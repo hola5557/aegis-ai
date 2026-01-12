@@ -1,0 +1,7 @@
+{
+  "name": "Aegis AI",
+  "description": "A privacy-first, secure AI platform featuring client-side PII redaction, total data sovereignty, and EU AI Act compliance transparency.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
