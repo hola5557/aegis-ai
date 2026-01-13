@@ -21,9 +21,11 @@ export interface UserSettings {
   privacyShield: boolean; // PII Redaction
   dataRetention: boolean; // Local storage persistence
   voiceEnabled: boolean;
+  theme: 'light' | 'dark' | 'system'; // UI Theme
   plugins: {
     webSearch: boolean;
   };
+  customInstructions: string; // User-defined behavior
 }
 
 export interface ChatSession {
@@ -40,5 +42,8 @@ export interface Agent {
   description: string;
   systemInstruction: string;
   icon: string;
-  category: 'Productivity' | 'Coding' | 'Writing' | 'Business';
+  category: 'Productivity' | 'Coding' | 'Writing' | 'Business' | 'Security' | 'Creative';
+  author: string;
+  rating: number;
+  users: string;
 }

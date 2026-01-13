@@ -65,31 +65,65 @@ export const AGENTS: Agent[] = [
     description: 'The standard, versatile AI assistant for everyday tasks.',
     category: 'Productivity',
     icon: '◈',
-    systemInstruction: SYSTEM_INSTRUCTION
+    systemInstruction: SYSTEM_INSTRUCTION,
+    author: 'Aegis Systems',
+    rating: 4.9,
+    users: '2.4M'
   },
   {
     id: 'coder',
     name: 'DevOps Architect',
-    description: 'Senior engineer specialized in clean code, cloud architecture, and debugging.',
+    description: 'Senior engineer specialized in clean code, cloud architecture, and debugging complex systems.',
     category: 'Coding',
     icon: '💻',
-    systemInstruction: SYSTEM_INSTRUCTION + `\n\nROLE: Senior Software Engineer.\nSTYLE: Concise, technical, production-ready code only. Explain trade-offs.`
+    systemInstruction: SYSTEM_INSTRUCTION + `\n\nROLE: Senior Software Engineer.\nSTYLE: Concise, technical, production-ready code only. Explain trade-offs.`,
+    author: 'Open Source Collective',
+    rating: 4.8,
+    users: '850k'
+  },
+  {
+    id: 'sec-ops',
+    name: 'NetSec Guardian',
+    description: 'Cybersecurity expert for auditing code, explaining vulnerabilities, and security best practices.',
+    category: 'Security',
+    icon: '🛡️',
+    systemInstruction: SYSTEM_INSTRUCTION + `\n\nROLE: Cybersecurity Expert.\nSTYLE: Paranoid, thorough, security-first. Focus on Owasp Top 10 and zero-trust architecture.`,
+    author: 'Red Team Corp',
+    rating: 5.0,
+    users: '120k'
   },
   {
     id: 'writer',
     name: 'Editorial Chief',
-    description: 'Expert editor for polishing prose, blogs, and marketing copy.',
+    description: 'Expert editor for polishing prose, blogs, and marketing copy with a focus on engagement.',
     category: 'Writing',
     icon: '✍️',
-    systemInstruction: SYSTEM_INSTRUCTION + `\n\nROLE: Senior Editor.\nSTYLE: Engaging, punchy, and grammatically perfect. Focus on tone and flow.`
+    systemInstruction: SYSTEM_INSTRUCTION + `\n\nROLE: Senior Editor.\nSTYLE: Engaging, punchy, and grammatically perfect. Focus on tone and flow.`,
+    author: 'Aegis Creative',
+    rating: 4.7,
+    users: '400k'
   },
   {
     id: 'mba',
     name: 'Strategy Consultant',
-    description: 'Business mentor for analyzing markets, risks, and pitch decks.',
+    description: 'Business mentor for analyzing markets, risks, and refining pitch decks.',
     category: 'Business',
     icon: '💼',
-    systemInstruction: SYSTEM_INSTRUCTION + `\n\nROLE: McKinsey/BCG Consultant.\nSTYLE: Strategic, data-driven, direct. Focus on ROI, TAM, and risk mitigation.`
+    systemInstruction: SYSTEM_INSTRUCTION + `\n\nROLE: McKinsey/BCG Consultant.\nSTYLE: Strategic, data-driven, direct. Focus on ROI, TAM, and risk mitigation.`,
+    author: 'Venture Partners',
+    rating: 4.6,
+    users: '150k'
+  },
+  {
+    id: 'creative',
+    name: 'Muse',
+    description: 'Brainstorming partner for creative writing, world-building, and ideation.',
+    category: 'Creative',
+    icon: '🎨',
+    systemInstruction: SYSTEM_INSTRUCTION + `\n\nROLE: Creative Muse.\nSTYLE: Imaginative, open-minded, inspiring. Help break writer's block.`,
+    author: 'Community',
+    rating: 4.5,
+    users: '90k'
   }
 ];
 

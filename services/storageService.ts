@@ -1,11 +1,30 @@
 import { ChatSession, Message } from '../types';
 
-const STORAGE_KEY = 'aegis_chats_v1';
-const SETTINGS_KEY = 'aegis_settings_v1';
+const SESSION_KEY = 'aegis_active_session_v1';
 
-export const saveChat = (session: ChatSession) => {
+// Helper to get user-specific storage key
+const getStorageKey = (userId: string) => `aegis_chats_${userId}_v1`;
+
+// --- Session Management ---
+
+export const saveUserSession = (email: string) => {
+  localStorage.setItem(SESSION_KEY, email);
+};
+
+export const getUserSession = (): string | null => {
+  return localStorage.getItem(SESSION_KEY);
+};
+
+export const clearUserSession = () => {
+  localStorage.removeItem(SESSION_KEY);
+};
+
+// --- Chat Management ---
+
+export const saveChat = (session: ChatSession, userId: string) => {
   try {
-    const existing = getChats();
+    const key = getStorageKey(userId);
+    const existing = getChats(userId);
     const index = existing.findIndex(c => c.id === session.id);
     
     // Update timestamp
@@ -23,33 +42,36 @@ export const saveChat = (session: ChatSession) => {
     // Limit to 50 chats to save local storage space
     const trimmed = existing.slice(0, 50);
     
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(trimmed));
+    localStorage.setItem(key, JSON.stringify(trimmed));
   } catch (e) {
     console.error('Failed to save chat', e);
   }
 };
 
-export const getChats = (): ChatSession[] => {
+export const getChats = (userId: string): ChatSession[] => {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const key = getStorageKey(userId);
+    const raw = localStorage.getItem(key);
     return raw ? JSON.parse(raw) : [];
   } catch (e) {
     return [];
   }
 };
 
-export const getChat = (id: string): ChatSession | undefined => {
-  return getChats().find(c => c.id === id);
+export const getChat = (id: string, userId: string): ChatSession | undefined => {
+  return getChats(userId).find(c => c.id === id);
 };
 
-export const deleteChat = (id: string) => {
-    const existing = getChats();
+export const deleteChat = (id: string, userId: string) => {
+    const key = getStorageKey(userId);
+    const existing = getChats(userId);
     const filtered = existing.filter(c => c.id !== id);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
+    localStorage.setItem(key, JSON.stringify(filtered));
 };
 
-export const clearAllChats = () => {
-    localStorage.removeItem(STORAGE_KEY);
+export const clearAllChats = (userId: string) => {
+    const key = getStorageKey(userId);
+    localStorage.removeItem(key);
 };
 
 export const createNewSession = (initialMsg?: Message, agentId = 'default'): ChatSession => {

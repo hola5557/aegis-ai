@@ -10,6 +10,10 @@ interface GeminiOptions {
   tools?: {
     googleSearch?: boolean;
   };
+  attachment?: {
+    mimeType: string;
+    data: string;
+  };
 }
 
 export const sendMessageToGemini = async ({
@@ -17,7 +21,8 @@ export const sendMessageToGemini = async ({
   history,
   newMessage,
   systemInstruction,
-  tools
+  tools,
+  attachment
 }: GeminiOptions): Promise<{ text: string; groundingMetadata?: any }> => {
   try {
     // Construct tool config if plugins are enabled
@@ -26,17 +31,45 @@ export const sendMessageToGemini = async ({
       toolConfig.push({ googleSearch: {} });
     }
 
-    const chat = ai.chats.create({
+    // Prepare new message parts
+    const currentParts: any[] = [];
+    
+    // Add attachment if present
+    if (attachment) {
+      currentParts.push({
+        inlineData: {
+          mimeType: attachment.mimeType,
+          data: attachment.data
+        }
+      });
+    }
+
+    // Add text prompt
+    if (newMessage) {
+        currentParts.push({ text: newMessage });
+    } else if (currentParts.length === 0) {
+        // Fallback if absolutely nothing provided
+        currentParts.push({ text: "" });
+    }
+
+    // Manual history construction for generateContent
+    // This bypasses strict typing issues with Chat.sendMessage({ message: ... })
+    // and correctly formats the request as a multi-turn conversation.
+    const contents = [
+        ...history,
+        {
+            role: 'user',
+            parts: currentParts
+        }
+    ];
+
+    const result = await ai.models.generateContent({
       model: modelId,
+      contents: contents,
       config: {
         systemInstruction: systemInstruction || "You are Aegis AI.",
         tools: toolConfig.length > 0 ? toolConfig : undefined,
       },
-      history: history,
-    });
-
-    const result = await chat.sendMessage({
-      message: newMessage,
     });
 
     return {
