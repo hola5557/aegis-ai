@@ -9,6 +9,7 @@ import {
     getChats, 
     deleteChat, 
     createNewSession, 
+    clearAllChats
 } from './services/storageService';
 import PrivacyShield from './components/PrivacyShield';
 import LegalModal from './components/LegalModal';
@@ -106,6 +107,13 @@ const App: React.FC = () => {
               handleNewChat();
           }
       }
+  };
+
+  const handleClearHistory = () => {
+      clearAllChats(USER_ID);
+      setSessions([]);
+      // Create a fresh session immediately so the UI isn't broken
+      handleNewChat();
   };
 
   const handleAgentSelect = (agentId: string) => {
@@ -522,6 +530,7 @@ const App: React.FC = () => {
         onClose={() => setIsSettingsOpen(false)}
         settings={settings}
         onUpdateSettings={setSettings}
+        onClearHistory={handleClearHistory}
       />
 
       <LegalModal isOpen={isLegalModalOpen} onClose={() => setIsLegalModalOpen(false)} />

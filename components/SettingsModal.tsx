@@ -1,15 +1,16 @@
 import React from 'react';
 import { UserSettings } from '../types';
-import { X, Shield, Globe, Database, Cpu, Moon, Sun, Monitor } from 'lucide-react';
+import { X, Shield, Globe, Database, Cpu, Moon, Sun, Monitor, Trash2, AlertTriangle } from 'lucide-react';
 
 interface SettingsModalProps {
   isOpen: boolean;
   onClose: () => void;
   settings: UserSettings;
   onUpdateSettings: (newSettings: UserSettings) => void;
+  onClearHistory: () => void;
 }
 
-const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, settings, onUpdateSettings }) => {
+const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, settings, onUpdateSettings, onClearHistory }) => {
   if (!isOpen) return null;
 
   const toggle = (key: keyof UserSettings | 'webSearch') => {
@@ -28,6 +29,13 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, settings
 
   const setTheme = (theme: 'light' | 'dark' | 'system') => {
       onUpdateSettings({ ...settings, theme });
+  };
+
+  const handleClear = () => {
+      if (window.confirm("Are you sure you want to delete all chat history? This cannot be undone.")) {
+          onClearHistory();
+          onClose();
+      }
   };
 
   return (
@@ -150,6 +158,31 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, settings
                     </div>
 
                 </div>
+            </div>
+
+            {/* Data Management Section */}
+            <div>
+                 <h3 className="text-xs font-bold text-slate-500 dark:text-aegis-400 uppercase tracking-widest mb-3">Data Management</h3>
+                 <div className="bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-900/30 rounded-lg p-4">
+                    <div className="flex items-start gap-3">
+                        <div className="p-2 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg shrink-0">
+                            <AlertTriangle size={20} />
+                        </div>
+                        <div className="flex-1">
+                             <h4 className="text-sm font-bold text-red-900 dark:text-red-200 mb-1">Danger Zone</h4>
+                             <p className="text-xs text-red-700 dark:text-red-300 mb-3">
+                                 Permanently delete all chat history stored on this device. This action cannot be undone.
+                             </p>
+                             <button 
+                                onClick={handleClear}
+                                className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-red-900/20 border border-red-300 dark:border-red-800 text-red-600 dark:text-red-400 text-sm font-medium rounded-lg hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors"
+                             >
+                                <Trash2 size={16} />
+                                Clear All Chat History
+                             </button>
+                        </div>
+                    </div>
+                 </div>
             </div>
 
         </div>
