@@ -184,7 +184,10 @@ const App: React.FC = () => {
 
     try {
       // 3. API Call
-      const apiHistory = updatedSession.messages
+      // Exclude the current message we just added locally, because geminiService will append contentToSend as a new turn
+      const historyMessages = updatedSession.messages.slice(0, -1);
+      
+      const apiHistory = historyMessages
         .filter(m => m.role !== 'system')
         .map(m => ({
           role: m.role,
